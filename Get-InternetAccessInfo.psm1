@@ -394,16 +394,36 @@ Function Get-UserInternetSettings {
         $InternetSettings = $null
     } finally {
         if ($InternetSettings) {
-            [bool]$booltmp = $InternetSettings.GetValue("ProxyEnable")
-            $Results | add-member -MemberType NoteProperty -Name "User Proxy" -Value $booltmp
-            [bool]$booltmp2 = $InternetSettings.GetValue("ProxyHTTP1.1")
-            $Results | add-member -MemberType NoteProperty -Name "User Proxy HTTP1.1" -Value $booltmp2
+            try {
+                [bool]$booltmp = $InternetSettings.GetValue("ProxyEnable")
+            } catch {
+                $booltmp = $false
+            } finally {
+                $Results | add-member -MemberType NoteProperty -Name "User Proxy" -Value $booltmp
+            }
+            try {
+                [bool]$booltmp2 = $InternetSettings.GetValue("ProxyHTTP1.1")
+            } catch {
+                $booltmp2 = $false
+            } finally {
+                $Results | add-member -MemberType NoteProperty -Name "User Proxy HTTP1.1" -Value $booltmp2
+            }
             $Results | add-member -MemberType NoteProperty -Name "User Proxy server" -Value $InternetSettings.GetValue("ProxyServer")
             $Results | add-member -MemberType NoteProperty -Name "User Proxy Autoconfig URL" -Value $InternetSettings.GetValue("AutoConfigURL")
-            [bool]$booltmp3 = $InternetSettings.GetValue("AutoDetect")
-            $Results | add-member -MemberType NoteProperty -Name "User Proxy WPAD" -Value $booltmp3
-            [bool]$booltmp4 = $InternetSettings.GetValue("MigrateProxy")
-            $Results | add-member -MemberType NoteProperty -Name "User Proxy Migrate" -Value $booltmp4
+            try {
+                [bool]$booltmp3 = $InternetSettings.GetValue("AutoDetect")
+            } catch {
+                $booltmp3 = $false
+            } finally {
+                $Results | add-member -MemberType NoteProperty -Name "User Proxy WPAD" -Value $booltmp3
+            }
+            try {
+                [bool]$booltmp4 = $InternetSettings.GetValue("MigrateProxy")
+            } catch {
+                $booltmp4 = $false
+            } finally {
+                $Results | add-member -MemberType NoteProperty -Name "User Proxy Migrate" -Value $booltmp4
+            }
         }
     }
     try {
